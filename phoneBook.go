@@ -8,65 +8,37 @@ import (
 	"math/rand"
 	"String"
 )
+
 type Entry struct {
-	Name string 
-	Surname string
-	Tel string
+	Name 		string 
+	Surname 	string
+	Tel 		string
+	LastAccess  string
 }
+
+var CSVFILE = "./csv.data"
 
 var data = []Entry{}
-
-func search(key string) *Entry {
-	for i, v := range data {
-		if v.Surname == key {
-			return &data[i]
-		}
-	}
-	return nil
-}
-func list() {
-	for _, v := range data {
-		fmt.Println(v)
-	}
-}
 
 func main() {
 	arguments := os.Args
 	if len(arguments) == 1 {
-		exe := path.Base(arguments[0])
-		fmt.Printf("Usage: %s search | list <arguments>\n",exe)
+		fmt.Println("Usage: insert|delete|search|list <arguments>")
 		return 
 	}
-	data = append(data, Entry{"Nikhil","Pathak","384243899"})
-	data = append(data, Entry{"Ritik","Pathak","384243299"})
-	data = append(data, Entry{"Indra","Pathak","384243199"})
-
-	switch arguments[1] {
-	case "search":
-		if len(arguments) != 3 {
-			fmt.Println("Usage: search Surname")
+	//If csv file does not exist, create a empty one
+	_, err := os.Stat(CSVFILE)
+	//If error is not nil , it means that file does not exist
+	if err != nil {
+		fmt.Println("Creating", CSVFILE)
+		f, err := os.Create(CSVFILE)
+		if err != nil {
+			f.Close()
+			fmt.Println(err)
 			return
 		}
-		result := search(arguments[2])
-		if result == nil {
-			fmt.Println("Entry Not Found: ",arguments[2])
-			return
-		}
-		fmt.Println(*result)
-
-	case "list":
-		list()
-	default:
-		fmt.Println("Not a valid option")
+		f.Close()
 	}
 
 }
 
-func populate(n int, s []Entry){
-	for i :=0; i < n; i++{
-		name := getString(4)
-		surname := getString(5)
-		n := strconv.Itoa(random(100,199))
-		data := append(data, Entry{name, surname, n})
-	}
-}
