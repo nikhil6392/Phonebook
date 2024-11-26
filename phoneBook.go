@@ -40,5 +40,14 @@ func main() {
 		f.Close()
 	}
 
+	fileInfo, err := os.Stat(CSVFILE)
+	//Is it a regular file ?
+
+	mode := fileInfo.Mode()
+	if !mode.IsRegular() {
+		fmt.Println(CSVFILE, "Not a regular file !")
+		return
+	}
+
 }
 
