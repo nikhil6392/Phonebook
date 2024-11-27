@@ -32,6 +32,21 @@ func createIndex() error {
 
 }
 
+func deleteEntry(key string) error {
+	i, ok := index[key]
+	if !ok {
+		return fmt.Errorf("%s cannot be found!", key)
+	}
+	data = append(data[:i], data[i+1:]...)
+	//Updating the index - key does not exist any more
+	delete(index, key)
+	err := saveCSVFile(CSVFILE)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func main() {
 	arguments := os.Args
 	if len(arguments) == 1 {
