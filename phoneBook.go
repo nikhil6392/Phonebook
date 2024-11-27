@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 )
 
@@ -62,6 +63,15 @@ func insert(pS *Entry) error {
 		return err
 	}
 	return nil
+}
+
+func search(key string) *Entry {
+	i, ok := index[key]
+	if !ok {
+		return nil
+	}
+	data[i].LastAccess = strconv.FormatInt(time.Now().Unix(), 10)
+	return &data[i]
 }
 
 
