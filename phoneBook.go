@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type Entry struct {
@@ -22,7 +23,7 @@ func readCSVFile(filepath string){
 }
 
 func createIndex() error {
-	
+
 }
 
 func main() {
@@ -66,5 +67,62 @@ func main() {
 		return
 	}
 
+	//Checking the differences between commands
+	switch arguments[1] {
+	case "insert" :
+		if len(arguments) != 5 {
+			fmt.Println("Usage: insert Name Surname Telephone")
+			return
+		}
+		t := strings.ReplaceAll(arguments[4], "-","")  
+	
+
+	temp := initS(arguments[2], arguments[3], t)
+	//if it was nil, there was an error
+	if temp != nil {
+		err := insert(temp)
+		if err != nil {
+			fmt.Println(err)
+			return 
+	     }
+	}
+
+case "delete":
+	if len(arguments) != 3 {
+		fmt.Println("Usage: delete number")
+		return
+	}
+	t := strings.ReplaceAll(arguments[2], "-", "")
+	if !matchTel(t){
+		fmt.Println("Not a valid telephone number:", t)
+		return
+	}
+	err := deleteEntry(t)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+case "search":
+	if len(arguments) != 3 {
+		fmt.Println("Usage: search Number")
+		return
+	}
+	t := strings.ReplaceAll(arguments[2], "-", "")
+	if !matchTel(t) {
+		fmt.Println("Not a valid telephone number")
+		return
+	}
+
+	temp := search(t)
+	if temp == nil {
+		fmt.Println("Number not found:", t)
+		return
+	}
+	fmt.Println(*temp)
+case "list":
+	list()
+default:
+	fmt.Println("Not a valid option")
 }
 
+}
