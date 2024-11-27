@@ -47,6 +47,24 @@ func deleteEntry(key string) error {
 	return nil
 }
 
+func insert(pS *Entry) error {
+	// IF Exists , do not insert the entry
+	_, ok := index[(*pS).Tel]
+	if ok {
+		return fmt.Errorf("%s already exists", pS.Tel)
+	}
+	data = append(data, *pS)
+	//Update the index
+	_ = createIndex()
+
+	err := saveCSVFile(CSVFILE)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+
 func main() {
 	arguments := os.Args
 	if len(arguments) == 1 {
