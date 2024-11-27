@@ -4,10 +4,10 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
-	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type Entry struct {
@@ -20,6 +20,8 @@ type Entry struct {
 var CSVFILE = "./csv.data"
 
 var data = []Entry{}
+
+var index map[string]int
 
 func readCSVFile(filepath string) error{
 	_, err := os.Stat(filepath)
@@ -53,7 +55,19 @@ func readCSVFile(filepath string) error{
 	return nil
 }
 func saveCSVFile(filepath string) error {
-	
+	csvfile, err := os.Create(filepath)
+	if err != nil {
+		return err
+	}
+	defer csvfile.Close()
+
+	csvwriter := csv.NewWriter(csvfile)
+	for _, row := range data {
+		temp := []string{row.Name,row.Surname,row.Tel,row.LastAccess}
+		_ = csvwriter.Write(temp)
+	}
+	csvwriter.Flush()
+	return nil
 }
 
 func createIndex() error {
@@ -64,6 +78,19 @@ func createIndex() error {
 	}
 	return nil
 
+}
+
+//Initialized by the user - returns a pointer
+//If it returns nil, there was an error
+func initS(N, S, T string) *Entry {
+	// Both of them should have a value
+	if T == "" || S == "" {
+		return nil
+	}
+
+	//Give LastAccess a value
+	LastAccess := strconv.FormatInt(time.Now().Unix(), 10)
+	return &Entry{Name: N, Surname: S, Tel: T, LastAccess: LastAccess}
 }
 
 func deleteEntry(key string) error {
