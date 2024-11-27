@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/csv"
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strconv"
 	"strings"
 )
@@ -19,8 +21,39 @@ var CSVFILE = "./csv.data"
 
 var data = []Entry{}
 
-func readCSVFile(filepath string){
+func readCSVFile(filepath string) error{
+	_, err := os.Stat(filepath)
+	if err != nil {
+		return err
+	}
 
+	f, err := os.Open(filepath)
+	if err != nil {
+		return err
+	}
+
+	defer f.Close()
+
+	//CSV file read all at once
+	lines, err := csv.NewReader(f).ReadAll()
+	if err != nil {
+		return err
+	}
+
+	for _, line := range lines {
+		temp := Entry{
+				Name: 	line[0],
+				Surname: line[1],
+				Tel: 	line[2],
+				LastAccess: line[3],
+		}
+		// Storing to global variable
+		data = append(data, temp)
+	}
+	return nil
+}
+func saveCSVFile(filepath string) error {
+	
 }
 
 func createIndex() error {
@@ -78,6 +111,12 @@ func list() {
 	for _, v := range data {
 		fmt.Println(v)
 	}
+}
+
+func matchTel(s string) bool {
+	t := []byte(s)
+	re := regexp.MustCompile(`\d+$`)
+	return re.Match(t)
 }
 
 
