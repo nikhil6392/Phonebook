@@ -3,10 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
-	"path"
-	"strconv"
-	"math/rand"
-	"String"
+	"path/filepath"
 )
 
 type Entry struct {
@@ -19,6 +16,10 @@ type Entry struct {
 var CSVFILE = "./csv.data"
 
 var data = []Entry{}
+
+func readCSVFile(filepath string){
+
+}
 
 func main() {
 	arguments := os.Args
@@ -46,6 +47,12 @@ func main() {
 	mode := fileInfo.Mode()
 	if !mode.IsRegular() {
 		fmt.Println(CSVFILE, "Not a regular file !")
+		return
+	}
+
+	err = readCSVFile(CSVFILE)
+	if err != nil {
+		fmt.Println(err)
 		return
 	}
 
