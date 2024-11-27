@@ -74,6 +74,12 @@ func search(key string) *Entry {
 	return &data[i]
 }
 
+func list() {
+	for _, v := range data {
+		fmt.Println(v)
+	}
+}
+
 
 func main() {
 	arguments := os.Args
