@@ -23,6 +23,12 @@ func readCSVFile(filepath string){
 }
 
 func createIndex() error {
+	index = make(map[string]int)
+	for i, k := range data {
+		key := k.Tel
+		index[key] = i
+	}
+	return nil
 
 }
 
