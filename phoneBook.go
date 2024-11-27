@@ -21,6 +21,10 @@ func readCSVFile(filepath string){
 
 }
 
+func createIndex() error {
+	
+}
+
 func main() {
 	arguments := os.Args
 	if len(arguments) == 1 {
@@ -53,6 +57,12 @@ func main() {
 	err = readCSVFile(CSVFILE)
 	if err != nil {
 		fmt.Println(err)
+		return
+	}
+
+	err = createIndex()
+	if err != nil {
+		fmt.Println("Cannot create index.")
 		return
 	}
 
