@@ -60,10 +60,17 @@ In main function I have done few things
 - .Mode()
 - .IsRegular()
 - switch()
+- Regular expression
 - UNIX time
 
 # Packages I have worked with
 
-- 
+- encoding/csc
+- fmt
+- os
+- strings
+- time
+- regexp
+- strconv
 
 
